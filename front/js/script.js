@@ -1,30 +1,3 @@
-/*
-
-// Boucle qui affiche 10 canaps (de 0 à 10 incré de 1)
-for (let i = 0; i < 4; i++) {
-  // Creation d'éléments HTML dans le JS pour pouvoir les tweak auto
-  let item = document.createElement("a");
-  item.href = "./product.html?id=42";
-  let article = document.createElement("article");
-  item.appendChild(article);
-  let imageCanap = document.createElement("img");
-  imageCanap.classList = "imageProduit";
-  (imageCanap.src = ""),
-    (imageCanap.alt = "Lorem ipsum dolor sit amet, Kanap name1");
-  article.appendChild(imageCanap);
-  let nomProduit = document.createElement("h3");
-  nomProduit.classList = "productName";
-  article.appendChild(nomProduit);
-  let descriptionProduit = document.createElement("p");
-  descriptionProduit.classList = "productDescription";
-  article.appendChild(descriptionProduit);
-
-  let sectionItems = document.getElementById("items");
-  sectionItems.appendChild(item);
-}
-
-*/
-
 const img = document.getElementsByClassName(".imageProduit");
 
 fetch("http://localhost:3000/api/products")
@@ -33,44 +6,50 @@ fetch("http://localhost:3000/api/products")
     // Première promesse : converti en format .json
     if (res.ok) {
       return res.json();
-    }
+      // Si il y a une erreur, le dit en console.log
+    } else res.rejected;
+    return console.log("Error");
   })
+  // Sinon, créer une promesse ayant comme paramètre 'tableauCanape'
+  .then((tableauCanape) => {
+    console.log(tableauCanape);
+    // .length pour qu'il ait la longueur du tableau (pouvoir adapter)
+    for (let i = 0; i < tableauCanape.length; i++) {
+      // Ici, unCanape est = au canapé sur lequel nous nous situons (i en l'occurence)
+      let unCanape = tableauCanape[i];
+      let item = document.createElement("a");
+      item.href = "/front/html/product.html"; // test 2eme template
+      /** InnerHTML modifie DIRECTEMENT dans le HTML, évite les répétitions
+       * Ici, mon a est = à 'item', dans 'item' je place mon HTML dans item.innerHTML avec des backticks
+       * innerHTML est à utiliser au maximum car il correspond à une approche DRY du JS
+       */
+      item.innerHTML = ` 
+        <article>
+          <img src="${unCanape.imageUrl}" alt="${unCanape.altTxt}">
+          <h3 class="productName">${unCanape.name}</h3>
+          <p class="productDescription">${unCanape.description}</p>
+        </article>
+      `;
 
-  // .then((data) => console.log(data[0]))   // Deuxième promesse (facultative) : montre sous forme de tableau [array]
+      // let article = document.createElement("article");
+      // item.appendChild(article);
+      // let imageCanap = document.createElement("img");
+      // imageCanap.className = "imageProduit";
+      // imageCanap.src = unCanape.imageUrl;
+      // imageCanap.alt = unCanape.altTxt;
+      // article.appendChild(imageCanap);
+      // let nomProduit = document.createElement("h3");
+      // nomProduit.className = "productName";
+      // nomProduit.innerText = unCanape.name;
+      // article.appendChild(nomProduit);
+      // let descriptionProduit = document.createElement("p");
+      // descriptionProduit.className = "productDescription";
+      // descriptionProduit.innerText = unCanape.description;
+      // article.appendChild(descriptionProduit);
 
-  .then((data) => (img.src = data[0].url));
-{
-  for (let i = 0; i < 4; i++) {
-    // Creation d'éléments HTML dans le JS pour pouvoir les tweak auto
-    let item = document.createElement("a");
-    item.href = "";
-    let article = document.createElement("article");
-    item.appendChild(article);
-    let imageCanap = document.createElement("img");
-    imageCanap.classList = "imageProduit";
-    (imageCanap.src = ""),
-      (imageCanap.alt = "");
-    article.appendChild(imageCanap);
-    let nomProduit = document.createElement("h3");
-    nomProduit.classList = "productName";
-    article.appendChild(nomProduit);
-    let descriptionProduit = document.createElement("p");
-    descriptionProduit.classList = "productDescription";
-    article.appendChild(descriptionProduit);
+      /** Cette approche fonctionne aussi mais est peu recommandée car coûteuse en temps et en neurones, tout mes tests résumé en une douzaine de lignes AHAHAHAHAHAHA */
 
-    let sectionItems = document.getElementById("items");
-    sectionItems.appendChild(item);
-  }
-  let image = document.getElementsByClassName("imageProduit");
-  let sectionItems = document.getElementById("items");
-
-  sectionItems.addEventListener("mouseover", function () {
-    fetch("http://localhost:3000/api/products")
-      .then((res) => res.json())
-      .then((result) => {
-        console.log(result);
-        image.src = result.message;
-      })
-      .catch((err) => console.log(err));
+      let sectionItems = document.getElementById("items");
+      sectionItems.appendChild(item);
+    }
   });
-}
