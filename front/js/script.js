@@ -1,4 +1,4 @@
-const img = document.getElementsByClassName(".imageProduit");
+// const img = document.getElementsByClassName(".imageProduit");
 
 fetch("http://localhost:3000/api/products")
   // Requête GET : va faire une requête à l'API (l'appelle)
@@ -10,7 +10,7 @@ fetch("http://localhost:3000/api/products")
     } else res.rejected;
     return console.log("Error");
   })
-  // Sinon, créer une promesse ayant comme paramètre 'tableauCanape'
+  // Ensuite, créer une promesse ayant comme paramètre 'tableauCanape'
   .then((tableauCanape) => {
     console.log(tableauCanape);
     // .length pour qu'il ait la longueur du tableau (pouvoir adapter)
@@ -18,9 +18,12 @@ fetch("http://localhost:3000/api/products")
       // Ici, unCanape est = au canapé sur lequel nous nous situons (i en l'occurence)
       let unCanape = tableauCanape[i];
       let item = document.createElement("a");
-      item.href = "/front/html/product.html"; // test 2eme template
+      item.href = "/front/html/product.html";
+      item.className = "product_id";
+      item.id = "product_id";
+      // test 2eme template
       /** InnerHTML modifie DIRECTEMENT dans le HTML, évite les répétitions
-       * Ici, mon a est = à 'item', dans 'item' je place mon HTML dans item.innerHTML avec des backticks
+       * Ici, mon a est ='item', dans 'item' je place mon HTML dans item.innerHTML avec des backticks
        * innerHTML est à utiliser au maximum car il correspond à une approche DRY du JS
        */
       item.innerHTML = ` 
@@ -51,5 +54,14 @@ fetch("http://localhost:3000/api/products")
 
       let sectionItems = document.getElementById("items");
       sectionItems.appendChild(item);
+
+      /*
+      let donneInfos = (item)=> {
+        item.getElementById("product_id").href += `?id=${product.id}`;
+      };
+      return donneInfos;
+      */
     }
   });
+
+// item.getElementById("product_id").href =+ `?id=${article.id}`
