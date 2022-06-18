@@ -1,5 +1,3 @@
-// const img = document.getElementsByClassName(".imageProduit");
-
 fetch("http://localhost:3000/api/products")
   // Requête GET : va faire une requête à l'API (l'appelle)
   .then(function (res) {
@@ -22,10 +20,6 @@ fetch("http://localhost:3000/api/products")
       item.className = "product_id";
       item.id = "product_id";
       // test 2eme template
-      /** InnerHTML modifie DIRECTEMENT dans le HTML, évite les répétitions
-       * Ici, mon a est ='item', dans 'item' je place mon HTML dans item.innerHTML avec des backticks
-       * innerHTML est à utiliser au maximum car il correspond à une approche DRY du JS
-       */
       item.innerHTML = ` 
         <article>
           <img src="${unCanape.imageUrl}" alt="${unCanape.altTxt}">
@@ -34,34 +28,27 @@ fetch("http://localhost:3000/api/products")
         </article>
       `;
 
-      // let article = document.createElement("article");
-      // item.appendChild(article);
-      // let imageCanap = document.createElement("img");
-      // imageCanap.className = "imageProduit";
-      // imageCanap.src = unCanape.imageUrl;
-      // imageCanap.alt = unCanape.altTxt;
-      // article.appendChild(imageCanap);
-      // let nomProduit = document.createElement("h3");
-      // nomProduit.className = "productName";
-      // nomProduit.innerText = unCanape.name;
-      // article.appendChild(nomProduit);
-      // let descriptionProduit = document.createElement("p");
-      // descriptionProduit.className = "productDescription";
-      // descriptionProduit.innerText = unCanape.description;
-      // article.appendChild(descriptionProduit);
-
-      /** Cette approche fonctionne aussi mais est peu recommandée car coûteuse en temps et en neurones, tout mes tests résumé en une douzaine de lignes AHAHAHAHAHAHA */
-
       let sectionItems = document.getElementById("items");
       sectionItems.appendChild(item);
-
-      /*
-      let donneInfos = (item)=> {
-        item.getElementById("product_id").href += `?id=${product.id}`;
-      };
-      return donneInfos;
-      */
+      
+      item.href = `./product.html?id=${tableauCanape[i]._id}`;
     }
   });
+  // let article = document.createElement("article");
+  // item.appendChild(article);
+  // let imageCanap = document.createElement("img");
+  // imageCanap.className = "imageProduit";
+  // imageCanap.src = unCanape.imageUrl;
+  // imageCanap.alt = unCanape.altTxt;
+  // article.appendChild(imageCanap);
+  // let nomProduit = document.createElement("h3");
+  // nomProduit.className = "productName";
+  // nomProduit.innerText = unCanape.name;
+  // article.appendChild(nomProduit);
+  // let descriptionProduit = document.createElement("p");
+  // descriptionProduit.className = "productDescription";
+  // descriptionProduit.innerText = unCanape.description;
+  // article.appendChild(descriptionProduit);
 
-// item.getElementById("product_id").href =+ `?id=${article.id}`
+  /** Cette approche fonctionne aussi mais est peu recommandée car coûteuse en temps et en neurones, tout mes tests résumé en une douzaine de lignes AHAHAHAHAHAHA */
+  
