@@ -9,6 +9,7 @@ let descriptionCanape = document.getElementById("description");
 let colorsCanape = document.getElementById("colors");
 let imgCanape = document.querySelector(".item__img"); // pourquoi getElementByClassName ne marche pas?
 let img = document.createElement("img");
+let qty = document.getElementById("quantity");
 imgCanape.appendChild(img); // erreur .appendChild pas une fonction si getElementByClassName l10
 
 infosCanape();
@@ -36,6 +37,7 @@ async function infosCanape() {
     });
 }
 
+/*
 const btnCart = document.getElementById("addToCart");
 // let quantityItem = [];
 let idItem = JSON.stringify(id);
@@ -44,4 +46,29 @@ let colorsItem = JSON.stringify(colors);
 btnCart.addEventListener("click", function addToCart() {
   localStorage.setItem("idItem", id);
   localStorage.setItem("colorsItem", colors);
+});
+*/
+
+const btnCart = document.getElementById("addToCart");
+
+btnCart.addEventListener("click", function addToCart() {
+  let myItem = { // objet js
+    idItem: id,
+    couleurCanape: colorsCanape.value, // objet.nomPropriete
+    quantityCanape: qty.value // .value va chercher l'info d'un formulaire / d'un option
+  }
+  // récupère le panier existant (sert à ne pas écraser un panier si il y en a un)
+
+  // Sert à :
+  let jsonCart = localStorage.getItem("cart"); // Récupère la valeur de la clé "cart"
+  let cart = JSON.parse(jsonCart); // Fait en sorte que cart corresponde à l'objet jsonCart avec un .parse
+  cart.push(myItem); // cart devient un tableau contenant les élements de myItem (objet + Propriétés)
+  localStorage.setItem("cart", JSON.stringify(cart)); // Créé un string qui a la clé "cart" et la valeur de l'objet cart (qui est un tableau)
+
+  // En supprimant la clé on se retrouve avec un erreur,
+  // faire en sorte que lorsque la clé n'est pas là (donc quand il n'y a pas de panier)
+  // Créer une condition qui va créer un panier vide (array [])
+  if (myItem == null) {
+    cart = [];
+  };
 });
