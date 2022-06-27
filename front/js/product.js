@@ -48,15 +48,17 @@ btnCart.addEventListener("click", function addToCart() {
   };
   // récupère le panier existant (sert à ne pas écraser un panier si il y en a un)
   // Sert à :
-  let jsonCart = localStorage.getItem("cart"); // Récupère la valeur de la clé "cart"
-  let cart = JSON.parse(jsonCart); // Fait en sorte que cart corresponde à l'objet jsonCart avec un .parse
-  cart.push(myItem); // cart devient un tableau contenant les élements de myItem (objet + Propriétés)
-  localStorage.setItem("cart", JSON.stringify(cart)); // Créé un string qui a la clé "cart" et la valeur de l'objet cart (qui est un tableau)
 
-  // En supprimant la clé on se retrouve avec un erreur,
-  // faire en sorte que lorsque la clé n'est pas là (donc quand il n'y a pas de panier)
-  // Créer une condition qui va créer un panier vide (array [])
-  if ((cart = null || undefined)) {
-    cart = [];
+  let cart = JSON.parse(localStorage.getItem("cart"));
+  // if = true = déjà un article dans le panier donc ajoute une ligne au tableau sans remplacer la valeur de la clé initiale
+  if (cart) {
+    cart.push(myItem);
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }
+  // else = false = pas de clé dans le panier, donc va en créer une dans un tableau vide qui aura comme paramètre la variable myItem
+  else {
+    cart = []; // créé un tableau vide
+    cart.push(myItem); // Utilise la méthode push pour mettre les paramètres de la variable myItem dans le tableau vide
+    localStorage.setItem("cart", JSON.stringify(cart)); // dit qu'on donne une clé "cart" à la variable cart (tableau vide)
   }
 });
