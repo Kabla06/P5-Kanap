@@ -50,15 +50,11 @@ btnCart.addEventListener("click", function addToCart() {
   // Sert à :
 
   let cart = JSON.parse(localStorage.getItem("cart"));
+  console.log(cart);
   // if = true = déjà un article dans le panier donc ajoute une ligne au tableau sans remplacer la valeur de la clé initiale
-  if (cart) {
-    cart.push(myItem);
-    localStorage.setItem("cart", JSON.stringify(cart));
+  if (cart == null) {
+    cart = [];
   }
-  // else = false = pas de clé dans le panier, donc va en créer une dans un tableau vide qui aura comme paramètre la variable myItem
-  else {
-    cart = []; // créé un tableau vide
-    cart.push(myItem); // Utilise la méthode push pour mettre les paramètres de la variable myItem dans le tableau vide
-    localStorage.setItem("cart", JSON.stringify(cart)); // dit qu'on donne une clé "cart" à la variable cart (tableau vide)
-  }
+  cart.push(myItem);
+  localStorage.setItem("cart", JSON.stringify(cart));
 });

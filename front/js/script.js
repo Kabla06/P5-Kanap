@@ -30,25 +30,24 @@ fetch("http://localhost:3000/api/products")
 
       let sectionItems = document.getElementById("items");
       sectionItems.appendChild(item);
-      
+
       item.href = `./product.html?id=${tableauCanape[i]._id}`;
     }
   });
-  // let article = document.createElement("article");
-  // item.appendChild(article);
-  // let imageCanap = document.createElement("img");
-  // imageCanap.className = "imageProduit";
-  // imageCanap.src = unCanape.imageUrl;
-  // imageCanap.alt = unCanape.altTxt;
-  // article.appendChild(imageCanap);
-  // let nomProduit = document.createElement("h3");
-  // nomProduit.className = "productName";
-  // nomProduit.innerText = unCanape.name;
-  // article.appendChild(nomProduit);
-  // let descriptionProduit = document.createElement("p");
-  // descriptionProduit.className = "productDescription";
-  // descriptionProduit.innerText = unCanape.description;
-  // article.appendChild(descriptionProduit);
+// let article = document.createElement("article");
+// item.appendChild(article);
+// let imageCanap = document.createElement("img");
+// imageCanap.className = "imageProduit";
+// imageCanap.src = unCanape.imageUrl;
+// imageCanap.alt = unCanape.altTxt;
+// article.appendChild(imageCanap);
+// let nomProduit = document.createElement("h3");
+// nomProduit.className = "productName";
+// nomProduit.innerText = unCanape.name;
+// article.appendChild(nomProduit);
+// let descriptionProduit = document.createElement("p");
+// descriptionProduit.className = "productDescription";
+// descriptionProduit.innerText = unCanape.description;
+// article.appendChild(descriptionProduit);
 
-  /** Cette approche fonctionne aussi mais est peu recommandée car coûteuse en temps et en neurones, tout mes tests résumé en une douzaine de lignes AHAHAHAHAHAHA */
-  
+/** Cette approche fonctionne aussi mais est peu recommandée car coûteuse en temps et en neurones, tout mes tests résumé en une douzaine de lignes AHAHAHAHAHAHA */
