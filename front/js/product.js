@@ -60,14 +60,26 @@ btnCart.addEventListener("click", function addToCart() {
 
   // Incrémentation panier
 
-  fetch("http://localhost:3000/api/products/")
-    .then((res) => res.json()) // converti en JSON
-    .then((unCanape) => {
-      let foundProduct = cart.find((myItem) => myItem.idItem == unCanape._id);
-      if (foundProduct != undefined) {
-        myItem.quantityCanape++;
-      } else {
-        myItem.quantityCanape = 1;
-      }
-    });
+  for (let i = 0; i < cart.length; i++) {
+    // petite boucle dans le cart qui commence à 0 (1)
+    let found = cart.find(
+      (element) =>
+        element.idItem == myItem.idItem &&
+        element.couleurCanape == myItem.couleurCanape
+    );
+    if (found == undefined) {
+      found.quantityCanape = 1;
+    } else {
+      found.quantityCanape++;
+    }
+  }
 });
+
+// Pour moi voilà comment ça fonctionne :
+// - Je parcours le panier avec la méthode .find()
+// - mon element correspond à myItem.couleurCanape et idItem
+// - SI mon found est undefined alors la valeur est fixée à 1
+// - SINON, elle augmente de 1
+// - Pour moi c'est censé boucler jusqu'à tomber sur l'id ET (&&) la couleur correspondante (L66 à 67)
+
+// Je m'obstine à mettre des if / else dans tous les sens mais c'est ce qui me parait le plus naturel
