@@ -58,6 +58,8 @@ btnCart.addEventListener("click", function addToCart() {
   cart.push(myItem);
   localStorage.setItem("cart", JSON.stringify(cart));
 
+  // Incrémentation panier
+
   fetch("http://localhost:3000/api/products/")
     .then((res) => res.json()) // converti en JSON
     .then((unCanape) => {
@@ -69,5 +71,3 @@ btnCart.addEventListener("click", function addToCart() {
       }
     });
 });
-
-// Créer fonction qui additionne sans faire de doublon en cas de ré ajout
