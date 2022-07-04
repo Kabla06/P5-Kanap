@@ -16,10 +16,10 @@ infosCanape();
 
 // Async / Await pas trop compris l'utilité sachant qu'il y a quand même des .then
 async function infosCanape() {
+  // ensuite execute cette promesse
   await fetch("http://localhost:3000/api/products/" + id) //  pourquoi fetch(total) ne marche pas?
     .then((res) => res.json()) // converti en JSON
     .then((unCanape) => {
-      // ensuite execute cette promesse
       img.setAttribute("src", unCanape.imageUrl); // modifie l'attribut src de <img> créé plus haut
       img.setAttribute("alt", unCanape.altTxt); // modifie l'attribut alt de <img> créé plus haut
       titleCanape.innerHTML = unCanape.name; // même principe que pour index.js sauf qu'on attribut un objet à un élément HTML pour que ça prenne moins de place
@@ -44,7 +44,7 @@ btnCart.addEventListener("click", function addToCart() {
     // objet js
     idItem: id,
     couleurCanape: colorsCanape.value, // objet.nomPropriete
-    quantityCanape: qty.value, // .value va chercher l'info d'un formulaire / d'un option
+    quantityCanape: qty.value, // .value va chercher l'info d'un formulaire / d'une option
   };
   // récupère le panier existant (sert à ne pas écraser un panier si il y en a un)
   // Sert à :
@@ -57,4 +57,17 @@ btnCart.addEventListener("click", function addToCart() {
   }
   cart.push(myItem);
   localStorage.setItem("cart", JSON.stringify(cart));
+
+  fetch("http://localhost:3000/api/products/")
+    .then((res) => res.json()) // converti en JSON
+    .then((unCanape) => {
+      let foundProduct = cart.find((myItem) => myItem.idItem == unCanape._id);
+      if (foundProduct != undefined) {
+        myItem.quantityCanape++;
+      } else {
+        myItem.quantityCanape = 1;
+      }
+    });
 });
+
+// Créer fonction qui additionne sans faire de doublon en cas de ré ajout
