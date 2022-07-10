@@ -41,45 +41,33 @@ const btnCart = document.getElementById("addToCart");
 
 btnCart.addEventListener("click", function addToCart() {
   let myItem = {
-    // objet js
     idItem: id,
     couleurCanape: colorsCanape.value, // objet.nomPropriete
-    quantityCanape: qty.value, // .value va chercher l'info d'un formulaire / d'une option
+    // ParseInt convertis string en entier // parseFloat à voir plus tard
+    quantityCanape: parseInt(qty.value), // .value va chercher l'info d'un formulaire / d'une option
   };
   // récupère le panier existant (sert à ne pas écraser un panier si il y en a un)
   // Sert à :
 
   let cart = JSON.parse(localStorage.getItem("cart"));
-  console.log(cart);
-  // if = true = déjà un article dans le panier donc ajoute une ligne au tableau sans remplacer la valeur de la clé initiale
   if (cart == null) {
     cart = [];
   }
-  cart.push(myItem);
-  localStorage.setItem("cart", JSON.stringify(cart));
 
   // Incrémentation panier
 
-  for (let i = 0; i < cart.length; i++) {
-    // petite boucle dans le cart qui commence à 0 (1)
-    let found = cart.find(
-      (element) =>
-        element.idItem == myItem.idItem &&
-        element.couleurCanape == myItem.couleurCanape
-    );
-    if (found == undefined) {
-      found.quantityCanape = 1;
-    } else {
-      found.quantityCanape++;
-    }
+  let found = cart.find(
+    // déja une boucle genre
+    (element) =>
+      element.idItem == myItem.idItem &&
+      element.couleurCanape == myItem.couleurCanape
+  );
+  console.log(found); // cart ne peut pas être 0 car il a soit rien dedans (n'existe pas, soit a déjà un item)
+  if (found == undefined) {
+    cart.push(myItem);
+  } else {
+    found.quantityCanape += myItem.quantityCanape;
   }
+  localStorage.setItem("cart", JSON.stringify(cart));
+  // console.log(cart);
 });
-
-// Pour moi voilà comment ça fonctionne :
-// - Je parcours le panier avec la méthode .find()
-// - mon element correspond à myItem.couleurCanape et idItem
-// - SI mon found est undefined alors la valeur est fixée à 1
-// - SINON, elle augmente de 1
-// - Pour moi c'est censé boucler jusqu'à tomber sur l'id ET (&&) la couleur correspondante (L66 à 67)
-
-// Je m'obstine à mettre des if / else dans tous les sens mais c'est ce qui me parait le plus naturel

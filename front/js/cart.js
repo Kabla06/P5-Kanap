@@ -2,7 +2,11 @@
 const str = window.location; // On est sur TELLE ou  TELLE page
 const url = new URL(str); // URL = String
 const id = url.searchParams.get("id");
-const cart = JSON.parse(localStorage.getItem("cart"));
+let cart = JSON.parse(localStorage.getItem("cart"));
+
+if (cart == null) {
+  cart = [];
+}
 
 console.log(cart);
 
@@ -47,7 +51,7 @@ fetch("http://localhost:3000/api/products")
                     <div class="cart__item__content__settings">
                         <div class="cart__item__content__settings__quantity">
                             <p>Qté : ${unCanape.quantityCanape}</p>
-                            <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="42">
+                            <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="">
                         </div>
                         <div class="cart__item__content__settings__delete">
                             <p class="deleteItem">Supprimer</p>
@@ -59,7 +63,6 @@ fetch("http://localhost:3000/api/products")
       let sectionCart = document.createElement("section");
       sectionCart.id = "cart__items";
       sectionCart = document.getElementById("cart__items");
-
       sectionCart.appendChild(article);
     }
   });
