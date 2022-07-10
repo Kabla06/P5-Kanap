@@ -26,8 +26,6 @@ fetch("http://localhost:3000/api/products")
     for (let i = 0; i < cart.length; i++) {
       let unCanape = cart[i];
 
-      // Fonction fléchée qui permet d'aller chercher dans le tableau canapeInfos l'id correspondant dans le unCanape (cart[i])
-      // Renvoie un booléen false tant qu'il n'a pas de correspondance
       const canapeFind = canapeInfos.find(
         (element) => element._id == unCanape.idItem
       );
@@ -64,5 +62,19 @@ fetch("http://localhost:3000/api/products")
       sectionCart.id = "cart__items";
       sectionCart = document.getElementById("cart__items");
       sectionCart.appendChild(article);
+
+      let prixTotal = canapeFind.price * unCanape.quantityCanape;
+      let qtyHTML = document.getElementById("totalQuantity");
+      qtyHTML.innerHTML = unCanape.quantityCanape;
+      let prxHTML = document.getElementById("totalPrice");
+      prxHTML.innerHTML = prixTotal;
     }
+
+    let removeItems = document.querySelector(".deleteItem");
+    console.log(removeItems);
+    
+    removeItems.addEventListener("click", function consoleRemove() {
+      localStorage.removeItem("cart");
+      console.log(consoleRemove);
+    });
   });

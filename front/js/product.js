@@ -53,9 +53,7 @@ btnCart.addEventListener("click", function addToCart() {
   if (cart == null) {
     cart = [];
   }
-
   // Incrémentation panier
-
   let found = cart.find(
     // déja une boucle genre
     (element) =>
