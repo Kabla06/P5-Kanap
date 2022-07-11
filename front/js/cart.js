@@ -63,18 +63,36 @@ fetch("http://localhost:3000/api/products")
       sectionCart = document.getElementById("cart__items");
       sectionCart.appendChild(article);
 
+      function sumArray(array) {
+        let sum = 0;
+        let qtyTotal = cart.quantityCanape;
+
+        array.forEach((cart) => {
+          sum += qtyTotal;
+        });
+
+        console.log(sum);
+        return sum;
+      }
+      sumArray(cart);
+
       let prixTotal = canapeFind.price * unCanape.quantityCanape;
       let qtyHTML = document.getElementById("totalQuantity");
-      qtyHTML.innerHTML = unCanape.quantityCanape;
+      qtyHTML.innerHTML = cart.quantityCanape;
       let prxHTML = document.getElementById("totalPrice");
       prxHTML.innerHTML = prixTotal;
     }
 
-    let removeItems = document.querySelector(".deleteItem");
+    let removeItems = document.querySelector("p.deleteItem");
     console.log(removeItems);
-    
+
     removeItems.addEventListener("click", function consoleRemove() {
-      localStorage.removeItem("cart");
-      console.log(consoleRemove);
+      let cart = JSON.parse(localStorage.getItem("cart"));
+      let index = cart.findIndex((produit) => (produit = removeItems));
+      let splice = cart.splice(index);
+      console.log(splice);
+      console.log(index);
+      localStorage.setItem("cart", JSON.stringify(cart));
+      location.reload();
     });
   });
