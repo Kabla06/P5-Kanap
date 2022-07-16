@@ -8,7 +8,11 @@ if (cart == null) {
   cart = [];
 }
 
-console.log(cart);
+// console.log(cart);
+
+let total = 0;
+let qtyTotal = 0;
+// let inputQuantity = 0;
 
 fetch("http://localhost:3000/api/products")
   // Requête GET : va faire une requête à l'API (l'appelle)
@@ -22,14 +26,14 @@ fetch("http://localhost:3000/api/products")
   })
 
   .then((canapeInfos) => {
-    console.log(canapeInfos);
+    // console.log(canapeInfos);
     for (let i = 0; i < cart.length; i++) {
       let unCanape = cart[i];
 
       const canapeFind = canapeInfos.find(
         (element) => element._id == unCanape.idItem
       );
-      console.log(canapeFind);
+      // console.log(canapeFind);
 
       let article = document.createElement("article");
       article.className = "cart__item";
@@ -63,36 +67,53 @@ fetch("http://localhost:3000/api/products")
       sectionCart = document.getElementById("cart__items");
       sectionCart.appendChild(article);
 
-      function sumArray(array) {
-        let sum = 0;
-        let qtyTotal = cart.quantityCanape;
-
-        array.forEach((cart) => {
-          sum += qtyTotal;
+      let qtyInput = document.querySelectorAll(".itemQuantity");
+      for (let k = 0; k < qtyInput.length; k++) {
+        let input = qtyInput[k];
+        input.addEventListener("change", function quantityChanged(event) {
+          let cart = JSON.parse(localStorage.getItem("cart"));
+          input = event.target;
+          if (isNaN(input.value) || input.value <= 0) {
+            input.value = 1;
+          }
+          localStorage.setItem("cart", JSON.stringify(cart));
         });
-
-        console.log(sum);
-        return sum;
       }
-      sumArray(cart);
 
-      let prixTotal = canapeFind.price * unCanape.quantityCanape;
-      let qtyHTML = document.getElementById("totalQuantity");
-      qtyHTML.innerHTML = cart.quantityCanape;
-      let prxHTML = document.getElementById("totalPrice");
-      prxHTML.innerHTML = prixTotal;
+      let totalLigne = canapeFind.price * unCanape.quantityCanape;
+      total += totalLigne;
+      qtyTotal += unCanape.quantityCanape;
+
+      let removeItems = article.querySelector("p.deleteItem");
+
+      removeItems.addEventListener("click", function consoleRemove() {
+        let cart = JSON.parse(localStorage.getItem("cart"));
+        let index = cart.findIndex(
+          (produit) => produit.idItem == unCanape.idItem
+        );
+        cart.splice(index, 1);
+        localStorage.setItem("cart", JSON.stringify(cart));
+        location.reload();
+      });
     }
 
-    let removeItems = document.querySelector("p.deleteItem");
-    console.log(removeItems);
+    console.log(total); // afficher cet let dans le html
+    console.log(qtyTotal); // Pareil
 
-    removeItems.addEventListener("click", function consoleRemove() {
-      let cart = JSON.parse(localStorage.getItem("cart"));
-      let index = cart.findIndex((produit) => (produit = removeItems));
-      let splice = cart.splice(index);
-      console.log(splice);
-      console.log(index);
-      localStorage.setItem("cart", JSON.stringify(cart));
-      location.reload();
-    });
+    let htmlPrix = document.getElementById("totalPrice");
+    htmlPrix.innerHTML = total;
+    let htmlQty = document.getElementById("totalQuantity");
+    htmlQty.innerHTML = qtyTotal;
+
+    // let qtyInput = document.querySelectorAll(".itemQuantity");
+    // for (let k = 0; k < qtyInput.length; k++) {
+    //   let input = qtyInput[k];
+    //   input.addEventListener("change", quantityChanged);
+    // }
+    // function quantityChanged(event) {
+    //   let input = event.target;
+    //   if (isNaN(input.value) || input.value <= 0) {
+    //     input.value = 1;
+    //   }
+    // }
   });
