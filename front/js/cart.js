@@ -3,6 +3,7 @@ const str = window.location; // On est sur TELLE ou  TELLE page
 const url = new URL(str); // URL = String
 const id = url.searchParams.get("id");
 let cart = JSON.parse(localStorage.getItem("cart"));
+console.log(cart);
 
 if (cart == null) {
   cart = [];
@@ -67,16 +68,46 @@ fetch("http://localhost:3000/api/products")
       sectionCart = document.getElementById("cart__items");
       sectionCart.appendChild(article);
 
-      let qtyInput = document.querySelectorAll(".itemQuantity");
+      /*
+
+      const qtyInput = document.querySelector(".itemQuantity");
+      console.log(qtyInput);
+      // Ici, on selectionne .itemQuantity dans le HTML
+      for (let k = 0; k < qtyInput.length; k++) {
+        // Ici, on boucle dans le tableau qtyInput
+        let input = qtyInput[k];
+        // Ici, itération de qtyInput
+        input.addEventListener("change", function quantityChanged(event) {
+          // Au changement de valeur, la fonction s'effectue
+          let cart = JSON.parse(localStorage.getItem("cart"));
+          // Ici, on récupère le cart (avec la clé)
+          input = event.target;
+
+          localStorage.setItem("cart", JSON.stringify(cart));
+          // Ici, on réactualise le cart avec un .setItem(())
+        });
+      }
+
+      */
+
+      //Utiliser la méthode splice() pour supprimer la valeur précédente ou juste trouver un moyen pour additionner proprement
+
+      const qtyInput = document.querySelectorAll(".itemQuantity");
+      console.log(qtyInput);
+
       for (let k = 0; k < qtyInput.length; k++) {
         let input = qtyInput[k];
-        input.addEventListener("change", function quantityChanged(event) {
-          let cart = JSON.parse(localStorage.getItem("cart"));
-          input = event.target;
+
+        input.addEventListener("change", function quantityChanged() {
+          // Splice() supprime la valeur et donc l'affichage dans le panier, pas la bonne solution
           if (isNaN(input.value) || input.value <= 0) {
             input.value = 1;
+          } else {
+            unCanape.quantityCanape += input.valueAsNumber;
           }
           localStorage.setItem("cart", JSON.stringify(cart));
+          location.reload();
+          console.log(quantityChanged);
         });
       }
 
@@ -104,16 +135,16 @@ fetch("http://localhost:3000/api/products")
     htmlPrix.innerHTML = total;
     let htmlQty = document.getElementById("totalQuantity");
     htmlQty.innerHTML = qtyTotal;
-
-    // let qtyInput = document.querySelectorAll(".itemQuantity");
-    // for (let k = 0; k < qtyInput.length; k++) {
-    //   let input = qtyInput[k];
-    //   input.addEventListener("change", quantityChanged);
-    // }
-    // function quantityChanged(event) {
-    //   let input = event.target;
-    //   if (isNaN(input.value) || input.value <= 0) {
-    //     input.value = 1;
-    //   }
-    // }
   });
+
+// let qtyInput = document.querySelectorAll(".itemQuantity");
+// for (let k = 0; k < qtyInput.length; k++) {
+//   let input = qtyInput[k];
+//   input.addEventListener("change", quantityChanged);
+// }
+// function quantityChanged(event) {
+//   let input = event.target;
+//   if (isNaN(input.value) || input.value <= 0) {
+//     input.value = 1;
+//   }
+// }
