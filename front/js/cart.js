@@ -158,7 +158,7 @@ function getForm() {
         firstNameErrorMsg.innerHTML = "";
       } else {
         // Si il y a une erreur, on écrit quelque chose et le texte est en rouge
-        firstNameErrorMsg.innerHTML = "Veuillez renseigner ce champ.";
+        form.firstName.setCustomValidity("Veuillez renseigner ce champ.");
         firstNameErrorMsg.style = "color: red";
       }
     };
@@ -172,7 +172,7 @@ function getForm() {
       if (charRegExp.test(inputLastName.value)) {
         lastNameErrorMsg.innerHTML = "";
       } else {
-        lastNameErrorMsg.innerHTML = "Veuillez renseigner ce champ.";
+        form.lastName.setCustomValidity("Veuillez renseigner ce champ.");
         lastNameErrorMsg.style = "color: red";
       }
     };
@@ -186,7 +186,7 @@ function getForm() {
       if (addressRegExp.test(inputAddress.value)) {
         addressErrorMsg.innerHTML = "";
       } else {
-        addressErrorMsg.innerHTML = "Veuillez renseigner ce champ.";
+        form.address.setCustomValidity("Veuillez renseigner ce champ.");
         addressErrorMsg.style = "color: red";
       }
     };
@@ -200,7 +200,7 @@ function getForm() {
       if (charRegExp.test(inputCity.value)) {
         cityErrorMsg.innerHTML = "";
       } else {
-        cityErrorMsg.innerHTML = "Veuillez renseigner ce champ.";
+        form.city.setCustomValidity("Veuillez renseigner ce champ.");
         cityErrorMsg.style = "color: red";
       }
     };
