@@ -67,5 +67,5 @@ btnCart.addEventListener("click", function addToCart() {
     found.quantityCanape += myItem.quantityCanape;
   }
   localStorage.setItem("cart", JSON.stringify(cart));
-  // console.log(cart);
+  alert("Article ajouté au panier !");
 });

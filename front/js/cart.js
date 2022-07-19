@@ -54,7 +54,7 @@ fetch("http://localhost:3000/api/products")
                     <div class="cart__item__content__settings">
                         <div class="cart__item__content__settings__quantity">
                             <p>Qté : ${unCanape.quantityCanape}</p>
-                            <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="">
+                            <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${unCanape.quantityCanape}">
                         </div>
                         <div class="cart__item__content__settings__delete">
                             <p class="deleteItem">Supprimer</p>
@@ -68,48 +68,20 @@ fetch("http://localhost:3000/api/products")
       sectionCart = document.getElementById("cart__items");
       sectionCart.appendChild(article);
 
-      /*
-
-      const qtyInput = document.querySelector(".itemQuantity");
-      console.log(qtyInput);
-      // Ici, on selectionne .itemQuantity dans le HTML
-      for (let k = 0; k < qtyInput.length; k++) {
-        // Ici, on boucle dans le tableau qtyInput
-        let input = qtyInput[k];
-        // Ici, itération de qtyInput
-        input.addEventListener("change", function quantityChanged(event) {
-          // Au changement de valeur, la fonction s'effectue
-          let cart = JSON.parse(localStorage.getItem("cart"));
-          // Ici, on récupère le cart (avec la clé)
-          input = event.target;
-
-          localStorage.setItem("cart", JSON.stringify(cart));
-          // Ici, on réactualise le cart avec un .setItem(())
-        });
-      }
-
-      */
-
-      //Utiliser la méthode splice() pour supprimer la valeur précédente ou juste trouver un moyen pour additionner proprement
-
-      const qtyInput = document.querySelectorAll(".itemQuantity");
+      let qtyInput = article.querySelector(".itemQuantity");
       console.log(qtyInput);
 
-      for (let k = 0; k < qtyInput.length; k++) {
-        let input = qtyInput[k];
-
-        input.addEventListener("change", function quantityChanged() {
-          // Splice() supprime la valeur et donc l'affichage dans le panier, pas la bonne solution
-          if (isNaN(input.value) || input.value <= 0) {
-            input.value = 1;
-          } else {
-            unCanape.quantityCanape += input.valueAsNumber;
-          }
-          localStorage.setItem("cart", JSON.stringify(cart));
-          location.reload();
-          console.log(quantityChanged);
-        });
-      }
+      qtyInput.addEventListener("change", function quantityChanged() {
+        // Splice() supprime la valeur et donc l'affichage dans le panier, pas la bonne solution
+        console.log(qtyInput.value);
+        if (isNaN(qtyInput.value) || qtyInput.value <= 0) {
+          qtyInput.value = 1;
+        } else {
+          unCanape.quantityCanape = qtyInput.valueAsNumber;
+        }
+        localStorage.setItem("cart", JSON.stringify(cart));
+        location.reload();
+      });
 
       let totalLigne = canapeFind.price * unCanape.quantityCanape;
       total += totalLigne;
@@ -148,3 +120,113 @@ fetch("http://localhost:3000/api/products")
 //     input.value = 1;
 //   }
 // }
+
+////////////// REGEX ou Expressions régulières //////////////
+/*
+
+/^[a-z][a-z '-.,]{1,31}$|^$/i
+/^ = Déclare le début du scan
+[a-z][a-z '-.,] = listing de tous les caractères acceptés sous forme de tableau
+{1,31} = limite de caractère
+/i = case insensitive
+
+*/
+
+//////////// REGEX QUI MARCHE + EXPLICATIONS ////////////
+
+function getForm() {
+  let form = document.querySelector(".cart__order__form");
+
+  // Liste des regex pour les différentes vérifs
+  let emailRegExp = new RegExp(
+    "^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$"
+  );
+  let charRegExp = new RegExp("^[a-zA-Z ,.'-]+$");
+  let addressRegExp = new RegExp(
+    "^[0-9]{1,3}(?:(?:[,. ]){1}[-a-zA-Zàâäéèêëïîôöùûüç]+)+"
+  );
+
+  // Fonctions qui vont servir à voir sur un "change" si c'est validé ou pas
+  form.firstName.addEventListener("change", function () {
+    // Vérifie le contenu de form > firstName sur un "change"
+    const validFirstName = function (inputFirstName) {
+      let firstNameErrorMsg = document.getElementById("firstNameErrorMsg");
+
+      // Ici, on test la valeur du paramètre inputFirstName en passant par charRegExp = document.querySelector(".cart__order__form"); > firstName
+      if (charRegExp.test(inputFirstName.value)) {
+        // Si rien en se passe, on écrit rien
+        firstNameErrorMsg.innerHTML = "";
+      } else {
+        // Si il y a une erreur, on écrit quelque chose et le texte est en rouge
+        firstNameErrorMsg.innerHTML = "Veuillez renseigner ce champ.";
+        firstNameErrorMsg.style = "color: red";
+      }
+    };
+    validFirstName(this);
+  });
+
+  form.lastName.addEventListener("change", function () {
+    const validLastName = function (inputLastName) {
+      let lastNameErrorMsg = document.getElementById("lastNameErrorMsg");
+
+      if (charRegExp.test(inputLastName.value)) {
+        lastNameErrorMsg.innerHTML = "";
+      } else {
+        lastNameErrorMsg.innerHTML = "Veuillez renseigner ce champ.";
+        lastNameErrorMsg.style = "color: red";
+      }
+    };
+    validLastName(this);
+  });
+
+  form.address.addEventListener("change", function () {
+    const validAddress = function (inputAddress) {
+      let addressErrorMsg = document.getElementById("addressErrorMsg");
+
+      if (addressRegExp.test(inputAddress.value)) {
+        addressErrorMsg.innerHTML = "";
+      } else {
+        addressErrorMsg.innerHTML = "Veuillez renseigner ce champ.";
+        addressErrorMsg.style = "color: red";
+      }
+    };
+    validAddress(this);
+  });
+
+  form.city.addEventListener("change", function () {
+    const validCity = function (inputCity) {
+      let cityErrorMsg = document.getElementById("cityErrorMsg");
+
+      if (charRegExp.test(inputCity.value)) {
+        cityErrorMsg.innerHTML = "";
+      } else {
+        cityErrorMsg.innerHTML = "Veuillez renseigner ce champ.";
+        cityErrorMsg.style = "color: red";
+      }
+    };
+    validCity(this);
+  });
+
+  form.email.addEventListener("change", function () {
+    const validEmail = function (inputEmail) {
+      let emailErrorMsg = document.getElementById("emailErrorMsg");
+
+      if (emailRegExp.test(inputEmail.value)) {
+        emailErrorMsg.innerHTML = "";
+      } else {
+        form.email.setCustomValidity("Veuillez renseigner votre email.");
+        emailErrorMsg.style = "color: red";
+      }
+    };
+    validEmail(this);
+  });
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+    form.email.checkValidity(); // renvoie un booléen
+    form.firstName.checkValidity();
+    form.lastName.checkValidity();
+    form.city.checkValidity();
+    form.address.checkValidity();
+  });
+}
+getForm();
