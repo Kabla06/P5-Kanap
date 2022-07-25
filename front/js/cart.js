@@ -72,7 +72,6 @@ fetch("http://localhost:3000/api/products")
       console.log(qtyInput);
 
       qtyInput.addEventListener("change", function quantityChanged() {
-        // Splice() supprime la valeur et donc l'affichage dans le panier, pas la bonne solution
         console.log(qtyInput.value);
         if (isNaN(qtyInput.value) || qtyInput.value <= 0) {
           qtyInput.value = 1;
@@ -92,7 +91,9 @@ fetch("http://localhost:3000/api/products")
       removeItems.addEventListener("click", function consoleRemove() {
         let cart = JSON.parse(localStorage.getItem("cart"));
         let index = cart.findIndex(
-          (produit) => produit.idItem == unCanape.idItem
+          (produit) =>
+            produit.idItem == unCanape.idItem &&
+            produit.couleurCanape == unCanape.couleurCanape
         );
         cart.splice(index, 1);
         localStorage.setItem("cart", JSON.stringify(cart));
@@ -108,18 +109,6 @@ fetch("http://localhost:3000/api/products")
     let htmlQty = document.getElementById("totalQuantity");
     htmlQty.innerHTML = qtyTotal;
   });
-
-// let qtyInput = document.querySelectorAll(".itemQuantity");
-// for (let k = 0; k < qtyInput.length; k++) {
-//   let input = qtyInput[k];
-//   input.addEventListener("change", quantityChanged);
-// }
-// function quantityChanged(event) {
-//   let input = event.target;
-//   if (isNaN(input.value) || input.value <= 0) {
-//     input.value = 1;
-//   }
-// }
 
 ////////////// REGEX ou Expressions régulières //////////////
 /*
@@ -158,7 +147,8 @@ function getForm() {
         firstNameErrorMsg.innerHTML = "";
       } else {
         // Si il y a une erreur, on écrit quelque chose et le texte est en rouge
-        form.firstName.setCustomValidity("Veuillez renseigner ce champ.");
+        firstNameErrorMsg.innerHTML = "Veuillez renseigner ce champ.";
+        // form.firstName.setCustomValidity("Veuillez renseigner ce champ.");
         firstNameErrorMsg.style = "color: red";
       }
     };
@@ -172,7 +162,8 @@ function getForm() {
       if (charRegExp.test(inputLastName.value)) {
         lastNameErrorMsg.innerHTML = "";
       } else {
-        form.lastName.setCustomValidity("Veuillez renseigner ce champ.");
+        lastNameErrorMsg.innerHTML = "Veuillez renseigner ce champ.";
+        // form.lastName.setCustomValidity("Veuillez renseigner ce champ.");
         lastNameErrorMsg.style = "color: red";
       }
     };
@@ -186,7 +177,8 @@ function getForm() {
       if (addressRegExp.test(inputAddress.value)) {
         addressErrorMsg.innerHTML = "";
       } else {
-        form.address.setCustomValidity("Veuillez renseigner ce champ.");
+        addressErrorMsg.innerHTML = "Veuillez renseigner ce champ.";
+        // form.address.setCustomValidity("Veuillez renseigner ce champ.");
         addressErrorMsg.style = "color: red";
       }
     };
@@ -200,7 +192,8 @@ function getForm() {
       if (charRegExp.test(inputCity.value)) {
         cityErrorMsg.innerHTML = "";
       } else {
-        form.city.setCustomValidity("Veuillez renseigner ce champ.");
+        cityErrorMsg.innerHTML = "Veuillez renseigner ce champ.";
+        // form.city.setCustomValidity("Veuillez renseigner ce champ.");
         cityErrorMsg.style = "color: red";
       }
     };
@@ -214,19 +207,69 @@ function getForm() {
       if (emailRegExp.test(inputEmail.value)) {
         emailErrorMsg.innerHTML = "";
       } else {
-        form.email.setCustomValidity("Veuillez renseigner votre email.");
+        emailErrorMsg.innerHTML = "Veuillez renseigner votre email.";
+        // form.email.setCustomValidity("Veuillez renseigner votre email.");
         emailErrorMsg.style = "color: red";
       }
     };
     validEmail(this);
   });
-  form.addEventListener("submit", function (event) {
-    event.preventDefault();
-    form.email.checkValidity(); // renvoie un booléen
-    form.firstName.checkValidity();
-    form.lastName.checkValidity();
-    form.city.checkValidity();
-    form.address.checkValidity();
-  });
 }
 getForm();
+
+function envoiFormulaire() {
+  const order = document.getElementById("order");
+  order.addEventListener("click", (event) => {
+    event.preventDefault();
+
+    let inputFormFirstName = document.getElementById("firstName");
+    let inputFormLastName = document.getElementById("lastName");
+    let inputFormAddress = document.getElementById("address");
+    let inputFormCity = document.getElementById("city");
+    let inputFormEmail = document.getElementById("email");
+
+    let sendId = [];
+    sendId.push(cart);
+
+    // Créer un objet formulaire
+    const order = {
+      contact: {
+        firstName: inputFormFirstName.value,
+        lastName: inputFormLastName.value,
+        address: inputFormAddress.value,
+        city: inputFormCity.value,
+        email: inputFormEmail.value,
+      },
+      products: sendId,
+    };
+
+    const postApi = {
+      method: "POST",
+      body: JSON.stringify(order),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    fetch("http://localhost:3000/api/products/order", postApi)
+      .then((res) => res.json())
+      .then((data) => {
+        localStorage.clear();
+        console.log(data);
+        localStorage.setItem("orderId", data.orderId);
+        document.location.href = "confirmation.html";
+      })
+      .catch((err) => {
+        alert("Il y a eu une erreur : " + err);
+      });
+  });
+}
+envoiFormulaire();
+
+// form.addEventListener("submit", function (event) {
+//   form.email.checkValidity();
+//   form.firstName.checkValidity();
+//   form.lastName.checkValidity();
+//   form.city.checkValidity();
+//   form.address.checkValidity();
+// });
