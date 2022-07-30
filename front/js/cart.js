@@ -122,154 +122,145 @@ fetch("http://localhost:3000/api/products")
 */
 
 //////////// REGEX QUI MARCHE + EXPLICATIONS ////////////
+// Liste des regex pour les différentes vérifs
+let emailRegExp = new RegExp(
+  "^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$"
+);
+let charRegExp = new RegExp("^[a-zA-Z ,.'-]+$");
+let addressRegExp = new RegExp(
+  "^[0-9]{1,3}(?:(?:[,. ]){1}[-a-zA-Zàâäéèêëïîôöùûüç]+)+"
+);
 
-function getForm() {
-  let form = document.querySelector(".cart__order__form");
+// renvoie si first name est valide avec un booléen true / false
+let form = document.querySelector(".cart__order__form");
 
-  // Liste des regex pour les différentes vérifs
-  let emailRegExp = new RegExp(
-    "^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$"
-  );
-  let charRegExp = new RegExp("^[a-zA-Z ,.'-]+$");
-  let addressRegExp = new RegExp(
-    "^[0-9]{1,3}(?:(?:[,. ]){1}[-a-zA-Zàâäéèêëïîôöùûüç]+)+"
-  );
+function isFirstNameValid() {
+  let firstNameErrorMsg = document.getElementById("firstNameErrorMsg");
 
-  // Fonctions qui vont servir à voir sur un "change" si c'est validé ou pas
-  form.firstName.addEventListener("change", function () {
-    // Vérifie le contenu de form > firstName sur un "change"
-    const validFirstName = function (inputFirstName) {
-      let firstNameErrorMsg = document.getElementById("firstNameErrorMsg");
-
-      // Ici, on test la valeur du paramètre inputFirstName en passant par charRegExp = document.querySelector(".cart__order__form"); > firstName
-      if (charRegExp.test(inputFirstName.value)) {
-        // Si rien en se passe, on écrit rien
-        firstNameErrorMsg.innerHTML = "";
-      } else {
-        // Si il y a une erreur, on écrit quelque chose et le texte est en rouge
-        firstNameErrorMsg.innerHTML = "Veuillez renseigner ce champ.";
-        // form.firstName.setCustomValidity("Veuillez renseigner ce champ.");
-        firstNameErrorMsg.style = "color: red";
-      }
-    };
-    validFirstName(this);
-  });
-
-  form.lastName.addEventListener("change", function () {
-    const validLastName = function (inputLastName) {
-      let lastNameErrorMsg = document.getElementById("lastNameErrorMsg");
-
-      if (charRegExp.test(inputLastName.value)) {
-        lastNameErrorMsg.innerHTML = "";
-      } else {
-        lastNameErrorMsg.innerHTML = "Veuillez renseigner ce champ.";
-        // form.lastName.setCustomValidity("Veuillez renseigner ce champ.");
-        lastNameErrorMsg.style = "color: red";
-      }
-    };
-    validLastName(this);
-  });
-
-  form.address.addEventListener("change", function () {
-    const validAddress = function (inputAddress) {
-      let addressErrorMsg = document.getElementById("addressErrorMsg");
-
-      if (addressRegExp.test(inputAddress.value)) {
-        addressErrorMsg.innerHTML = "";
-      } else {
-        addressErrorMsg.innerHTML = "Veuillez renseigner ce champ.";
-        // form.address.setCustomValidity("Veuillez renseigner ce champ.");
-        addressErrorMsg.style = "color: red";
-      }
-    };
-    validAddress(this);
-  });
-
-  form.city.addEventListener("change", function () {
-    const validCity = function (inputCity) {
-      let cityErrorMsg = document.getElementById("cityErrorMsg");
-
-      if (charRegExp.test(inputCity.value)) {
-        cityErrorMsg.innerHTML = "";
-      } else {
-        cityErrorMsg.innerHTML = "Veuillez renseigner ce champ.";
-        // form.city.setCustomValidity("Veuillez renseigner ce champ.");
-        cityErrorMsg.style = "color: red";
-      }
-    };
-    validCity(this);
-  });
-
-  form.email.addEventListener("change", function () {
-    const validEmail = function (inputEmail) {
-      let emailErrorMsg = document.getElementById("emailErrorMsg");
-
-      if (emailRegExp.test(inputEmail.value)) {
-        emailErrorMsg.innerHTML = "";
-      } else {
-        emailErrorMsg.innerHTML = "Veuillez renseigner votre email.";
-        // form.email.setCustomValidity("Veuillez renseigner votre email.");
-        emailErrorMsg.style = "color: red";
-      }
-    };
-    validEmail(this);
-  });
+  // Ici, on test la valeur du paramètre inputFirstName en passant par charRegExp = document.querySelector(".cart__order__form"); > firstName
+  if (charRegExp.test(form.firstName.value)) {
+    // Si rien en se passe, on écrit rien
+    firstNameErrorMsg.innerHTML = "";
+    return true;
+  } else {
+    // Si il y a une erreur, on écrit quelque chose et le texte est en rouge
+    firstNameErrorMsg.innerHTML = "Veuillez renseigner ce champ.";
+    // form.firstName.setCustomValidity("Veuillez renseigner ce champ.");
+    firstNameErrorMsg.style = "color: red";
+    return false;
+  }
 }
-getForm();
+
+function isLastNameValid() {
+  let lastNameErrorMsg = document.getElementById("lastNameErrorMsg");
+
+  if (charRegExp.test(form.lastName.value)) {
+    lastNameErrorMsg.innerHTML = "";
+    return true;
+  } else {
+    lastNameErrorMsg.innerHTML = "Veuillez renseigner ce champ.";
+    // form.lastName.setCustomValidity("Veuillez renseigner ce champ.");
+    lastNameErrorMsg.style = "color: red";
+    return false;
+  }
+}
+
+function isAddressValid() {
+  let addressErrorMsg = document.getElementById("addressErrorMsg");
+
+  if (addressRegExp.test(form.address.value)) {
+    addressErrorMsg.innerHTML = "";
+    return true;
+  } else {
+    addressErrorMsg.innerHTML = "Veuillez renseigner ce champ.";
+    // form.address.setCustomValidity("Veuillez renseigner ce champ.");
+    addressErrorMsg.style = "color: red";
+    return false;
+  }
+}
+
+function isCityValid() {
+  let cityErrorMsg = document.getElementById("cityErrorMsg");
+
+  if (charRegExp.test(form.city.value)) {
+    cityErrorMsg.innerHTML = "";
+    return true;
+  } else {
+    cityErrorMsg.innerHTML = "Veuillez renseigner ce champ.";
+    // form.city.setCustomValidity("Veuillez renseigner ce champ.");
+    cityErrorMsg.style = "color: red";
+    return false;
+  }
+}
+
+function isEmailValid() {
+  let emailErrorMsg = document.getElementById("emailErrorMsg");
+
+  if (emailRegExp.test(form.email.value)) {
+    emailErrorMsg.innerHTML = "";
+    return true;
+  } else {
+    emailErrorMsg.innerHTML = "Veuillez renseigner votre email.";
+    // form.email.setCustomValidity("Veuillez renseigner votre email.");
+    emailErrorMsg.style = "color: red";
+    return false;
+  }
+}
 
 function envoiFormulaire() {
   const order = document.getElementById("order");
   order.addEventListener("click", (event) => {
     event.preventDefault();
-
-    let inputFormFirstName = document.getElementById("firstName");
-    let inputFormLastName = document.getElementById("lastName");
-    let inputFormAddress = document.getElementById("address");
-    let inputFormCity = document.getElementById("city");
-    let inputFormEmail = document.getElementById("email");
-
-    let sendId = [];
-    sendId.push(cart);
-
-    // Créer un objet formulaire
-    const order = {
-      contact: {
-        firstName: inputFormFirstName.value,
-        lastName: inputFormLastName.value,
-        address: inputFormAddress.value,
-        city: inputFormCity.value,
-        email: inputFormEmail.value,
-      },
-      products: sendId,
-    };
-
-    const postApi = {
-      method: "POST",
-      body: JSON.stringify(order),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-
-    fetch("http://localhost:3000/api/products/order", postApi)
-      .then((res) => res.json())
-      .then((data) => {
-        localStorage.clear();
-        console.log(data);
-        localStorage.setItem("orderId", data.orderId);
-        document.location.href = "confirmation.html";
-      })
-      .catch((err) => {
-        alert("Il y a eu une erreur : " + err);
+    if (
+      // Quoi vérifier pour effectuer un preventDefault()?
+      !isFirstNameValid() ||
+      !isLastNameValid() ||
+      !isAddressValid() ||
+      !isCityValid() ||
+      !isEmailValid()
+    ) {
+      // Fonctionne quand le formulaire est vide mais ne détecte pas le booléen false renvoyé en cas d'erreur (plus haut)
+      console.log("Erreur dans le formulaire");
+    } else {
+      let sendId = cart.map((x) => {
+        return x.idItem;
       });
+
+      console.log(cart);
+      // Creation d'un objet formulaire "order" qui sera envoyé dans un tableau sous forme de string (L 260 POST)
+      const order = {
+        contact: {
+          firstName: form.firstName.value,
+          lastName: form.lastName.value,
+          address: form.address.value,
+          city: form.city.value,
+          email: form.email.value,
+        },
+        products: sendId,
+      };
+
+      // POST pour envoyer order à l'API pour qu'il nous renvoie un orderId à afficher dans la page confirmation
+      const postApi = {
+        method: "POST",
+        body: JSON.stringify(order),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+
+      // Requête à l'api order avec comme paramètre le POST pour obtenir le orderId
+      fetch("http://localhost:3000/api/products/order", postApi)
+        .then((res) => res.json())
+        .then((data) => {
+          localStorage.clear();
+          console.log(data);
+          localStorage.setItem("orderId", data.orderId);
+          document.location.href = "confirmation.html?id=" + data.orderId;
+        })
+        .catch((err) => {
+          alert("Il y a eu une erreur : " + err);
+        });
+    }
   });
 }
 envoiFormulaire();
-
-// form.addEventListener("submit", function (event) {
-//   form.email.checkValidity();
-//   form.firstName.checkValidity();
-//   form.lastName.checkValidity();
-//   form.city.checkValidity();
-//   form.address.checkValidity();
-// });

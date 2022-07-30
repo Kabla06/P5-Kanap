@@ -14,7 +14,7 @@ imgCanape.appendChild(img); // erreur .appendChild pas une fonction si getElemen
 
 infosCanape();
 
-// Async / Await pas trop compris l'utilité sachant qu'il y a quand même des .then
+// Async / Await pas trop compris l'utilité
 async function infosCanape() {
   // ensuite execute cette promesse
   await fetch("http://localhost:3000/api/products/" + id) //  pourquoi fetch(total) ne marche pas?
@@ -37,17 +37,19 @@ async function infosCanape() {
     });
 }
 
+colorsCanape.input = colorsCanape.value;
+console.log(colorsCanape);
+
 const btnCart = document.getElementById("addToCart");
 
 btnCart.addEventListener("click", function addToCart() {
   let myItem = {
     idItem: id,
     couleurCanape: colorsCanape.value, // objet.nomPropriete
-    // ParseInt convertis string en entier // parseFloat à voir plus tard
+    // ParseInt convertis string en entier
     quantityCanape: parseInt(qty.value), // .value va chercher l'info d'un formulaire / d'une option
   };
   // récupère le panier existant (sert à ne pas écraser un panier si il y en a un)
-  // Sert à :
 
   let cart = JSON.parse(localStorage.getItem("cart"));
   if (cart == null) {
@@ -60,12 +62,21 @@ btnCart.addEventListener("click", function addToCart() {
       element.idItem == myItem.idItem &&
       element.couleurCanape == myItem.couleurCanape
   );
-  console.log(found); // cart ne peut pas être 0 car il a soit rien dedans (n'existe pas, soit a déjà un item)
-  if (found == undefined) {
+
+  if (qty.value <= 0 || colorsCanape.input == null || undefined) {
+    alert("Veuillez sélectioner une couleur et une quantité.");
+    return;
+  }
+  // cart ne peut pas être 0 car il a soit rien dedans (n'existe pas, soit a déjà un item)
+  if (found == undefined || null) {
     cart.push(myItem);
   } else {
     found.quantityCanape += myItem.quantityCanape;
   }
+
   localStorage.setItem("cart", JSON.stringify(cart));
   alert("Article ajouté au panier !");
 });
+
+// Faire en sorte que je ne puisse pas ajouter de canaps sans couleurs et sans qty et ne pas mettre de valeurs négatives / sans produits
+// return = sort de la fonction (fin)
