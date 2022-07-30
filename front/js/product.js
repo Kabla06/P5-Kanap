@@ -64,7 +64,7 @@ btnCart.addEventListener("click", function addToCart() {
   );
 
   if (qty.value <= 0 || colorsCanape.input == null || undefined) {
-    alert("Veuillez sélectioner une couleur et une quantité.");
+    alert("Veuillez sélectionner une couleur et une quantité.");
     return;
   }
   // cart ne peut pas être 0 car il a soit rien dedans (n'existe pas, soit a déjà un item)
