@@ -1,3 +1,4 @@
+// Fonction permettant d'aller récupérer l'orderId dans le localStorage pour l'afficher dans le HTML.
 function orderIdentifiant() {
   const elementById = document.getElementById("orderId");
   elementById.innerText = localStorage.getItem("orderId");
@@ -5,11 +6,3 @@ function orderIdentifiant() {
   localStorage.clear();
 }
 orderIdentifiant();
-
-// const elementById = new URL(window.location.href).searchParams.get("id");
-// console.log(elementById);
-
-// const orderIdentifiant = document.getElementById("orderId");
-// orderIdentifiant.innerHTML = elementById;
-
-// localStorage.clear();

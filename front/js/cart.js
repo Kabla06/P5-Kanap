@@ -9,16 +9,13 @@ if (cart == null) {
   cart = [];
 }
 
-// console.log(cart);
-
 let total = 0;
 let qtyTotal = 0;
-// let inputQuantity = 0;
 
 fetch("http://localhost:3000/api/products")
   // Requête GET : va faire une requête à l'API (l'appelle)
   .then(function (res) {
-    // Première promesse : converti en format .json
+    // converti en format .json
     if (res.ok) {
       return res.json();
       // Si il y a une erreur, le dit en console.log
@@ -26,15 +23,14 @@ fetch("http://localhost:3000/api/products")
     return console.log("Error");
   })
 
+  // Modifie le HTML en ajoutant les informations de l'API (let unCanape = cart[i]; et canapeFind)
   .then((canapeInfos) => {
-    // console.log(canapeInfos);
     for (let i = 0; i < cart.length; i++) {
       let unCanape = cart[i];
 
       const canapeFind = canapeInfos.find(
         (element) => element._id == unCanape.idItem
       );
-      // console.log(canapeFind);
 
       let article = document.createElement("article");
       article.className = "cart__item";
@@ -71,8 +67,8 @@ fetch("http://localhost:3000/api/products")
       let qtyInput = article.querySelector(".itemQuantity");
       console.log(qtyInput);
 
+      // Fonction qui permet de changer la quantité d'un article dans la page panier et qui empêche que la quantité soit négative ou de 0.
       qtyInput.addEventListener("change", function quantityChanged() {
-        console.log(qtyInput.value);
         if (isNaN(qtyInput.value) || qtyInput.value <= 0) {
           qtyInput.value = 1;
         } else {
@@ -82,27 +78,32 @@ fetch("http://localhost:3000/api/products")
         location.reload();
       });
 
+      // Multiplie le prix de l'article dans l'API avec celui celui que l'on est en train de changer dans le cart. (let unCanape = cart[i];) Ajoute aussi la quantité de façon dynamique.
       let totalLigne = canapeFind.price * unCanape.quantityCanape;
       total += totalLigne;
       qtyTotal += unCanape.quantityCanape;
 
       let removeItems = article.querySelector("p.deleteItem");
 
+      // Fonction qui permet en faisant la correspondance avec l'API et l'item dans le cart, de supprimer l'article de son choix.
       removeItems.addEventListener("click", function consoleRemove() {
         let cart = JSON.parse(localStorage.getItem("cart"));
+        // Va chercher dans le tableau cart l'id et la couleur correspondant à l'API.
         let index = cart.findIndex(
           (produit) =>
             produit.idItem == unCanape.idItem &&
             produit.couleurCanape == unCanape.couleurCanape
         );
+        // .splice(index, 1) permet de supprimer un élément d'un tableau.
         cart.splice(index, 1);
+        // Ré actualise le localStorage et rafraichit la page pour afficher le panier avec l'article en moins.
         localStorage.setItem("cart", JSON.stringify(cart));
         location.reload();
       });
     }
 
-    console.log(total); // afficher cet let dans le html
-    console.log(qtyTotal); // Pareil
+    console.log(total);
+    console.log(qtyTotal);
 
     let htmlPrix = document.getElementById("totalPrice");
     htmlPrix.innerHTML = total;
@@ -113,8 +114,8 @@ fetch("http://localhost:3000/api/products")
 ////////////// REGEX ou Expressions régulières //////////////
 /*
 
-/^[a-z][a-z '-.,]{1,31}$|^$/i
-/^ = Déclare le début du scan
+^[a-z][a-z '-.,]{1,31}$|^$/i
+^ = Déclare le début du scan
 [a-z][a-z '-.,] = listing de tous les caractères acceptés sous forme de tableau
 {1,31} = limite de caractère
 /i = case insensitive
@@ -131,7 +132,6 @@ let addressRegExp = new RegExp(
   "^[0-9]{1,3}(?:(?:[,. ]){1}[-a-zA-Zàâäéèêëïîôöùûüç]+)+"
 );
 
-// renvoie si first name est valide avec un booléen true / false
 let form = document.querySelector(".cart__order__form");
 
 function isFirstNameValid() {
@@ -207,27 +207,32 @@ function isEmailValid() {
   }
 }
 
+// Fonction qui permet d'envoyer le formlaire à l'API sous forme d'un objet "contact" contenant les informations nécessaires.
+// Ecoute au clique si les formulaires sont bien remplis et si ce n'est pas le cas, performe un preventDefault();.
 function envoiFormulaire() {
   const order = document.getElementById("order");
   order.addEventListener("click", (event) => {
     event.preventDefault();
     if (
-      // Quoi vérifier pour effectuer un preventDefault()?
       !isFirstNameValid() ||
       !isLastNameValid() ||
       !isAddressValid() ||
       !isCityValid() ||
       !isEmailValid()
     ) {
-      // Fonctionne quand le formulaire est vide mais ne détecte pas le booléen false renvoyé en cas d'erreur (plus haut)
       console.log("Erreur dans le formulaire");
+    }
+    // Si le panier "cart" est vide, alors on sort de la fonction et un message d'erreur s'affiche. On ne finalise pas la commande.
+    else if (cart.length == 0) {
+      alert("Le panier est vide.");
+      return;
     } else {
+      // la méthode map() sert à attribuer une valeur à un paramètre (x ici).
       let sendId = cart.map((x) => {
         return x.idItem;
       });
 
-      console.log(cart);
-      // Creation d'un objet formulaire "order" qui sera envoyé dans un tableau sous forme de string (L 260 POST)
+      // Creation d'un objet formulaire "order" qui sera envoyé dans un tableau sous forme de string (L 242 POST).
       const order = {
         contact: {
           firstName: form.firstName.value,
@@ -239,7 +244,7 @@ function envoiFormulaire() {
         products: sendId,
       };
 
-      // POST pour envoyer order à l'API pour qu'il nous renvoie un orderId à afficher dans la page confirmation
+      // POST pour envoyer order à l'API pour qu'il nous renvoie un orderId à afficher dans la page confirmation.
       const postApi = {
         method: "POST",
         body: JSON.stringify(order),
