@@ -8,10 +8,10 @@ fetch("http://localhost:3000/api/products")
     } else res.rejected;
     return console.log("Error");
   })
-  // Ensuite, créer une promesse ayant comme paramètre 'tableauCanape'
+  // paramètre 'tableauCanape'
   .then((tableauCanape) => {
     console.log(tableauCanape);
-    // .length pour qu'il ait la longueur du tableau (pouvoir adapter)
+    // .length pour dire que c'est un tableau
     for (let i = 0; i < tableauCanape.length; i++) {
       // Ici, unCanape est = au canapé sur lequel nous nous situons (i en l'occurence)
       let unCanape = tableauCanape[i];

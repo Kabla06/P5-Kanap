@@ -18,7 +18,6 @@ fetch("http://localhost:3000/api/products")
     // converti en format .json
     if (res.ok) {
       return res.json();
-      // Si il y a une erreur, le dit en console.log
     } else res.rejected;
     return console.log("Error");
   })

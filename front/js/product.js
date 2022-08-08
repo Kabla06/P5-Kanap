@@ -58,7 +58,7 @@ btnCart.addEventListener("click", function addToCart() {
   if (cart == null) {
     cart = [];
   }
-  // Va trouvver la couleur et la quantité dans "cart" avec la méthode find(). Fais la correspondance avec l'id pour savoir si la couleur dans le "cart" est égale à la couleur de l'article que l'on veut ajouter.
+  // Va trouver la couleur et la quantité dans "cart" avec la méthode find(). Fais la correspondance avec l'id pour savoir si la couleur dans le "cart" est égale à la couleur de l'article que l'on veut ajouter.
   let found = cart.find(
     (element) =>
       element.idItem == myItem.idItem &&
