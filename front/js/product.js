@@ -17,9 +17,9 @@ infosCanape();
 
 // Une fonction asynchrone retourne toujours une promesse
 // Fonction qui appelle l'API pour aller prendre les information d'un article et les faire s'afficher dans la page "product.html"
-async function infosCanape() {
+function infosCanape() {
   // ensuite execute cette promesse
-  await fetch("http://localhost:3000/api/products/" + id)
+  fetch("http://localhost:3000/api/products/" + id)
     .then((res) => res.json()) // converti en JSON
     .then((unCanape) => {
       img.setAttribute("src", unCanape.imageUrl); // modifie l'attribut src de <img> créé plus haut
