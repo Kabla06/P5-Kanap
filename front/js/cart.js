@@ -87,13 +87,13 @@ fetch("http://localhost:3000/api/products")
       // Fonction qui permet en faisant la correspondance avec l'API et l'item dans le cart, de supprimer l'article de son choix.
       removeItems.addEventListener("click", function consoleRemove() {
         let cart = JSON.parse(localStorage.getItem("cart"));
-        // Va chercher dans le tableau cart l'id et la couleur correspondant à l'API.
+        // Va chercher dans le tableau cart l'id et la couleur correspondant à l'API. Vérifie que lorsque l'on clique, l'article correspond bien avec celui dans le cart.
         let index = cart.findIndex(
           (produit) =>
             produit.idItem == unCanape.idItem &&
             produit.couleurCanape == unCanape.couleurCanape
         );
-        // .splice(index, 1) permet de supprimer un élément d'un tableau.
+        // .splice(index, 1) permet de supprimer un élément d'un tableau. index est le paramètre (plus haut pour la correspondance et le num est la quantité à supprimer.)
         cart.splice(index, 1);
         // Ré actualise le localStorage et rafraichit la page pour afficher le panier avec l'article en moins.
         localStorage.setItem("cart", JSON.stringify(cart));
@@ -213,6 +213,7 @@ function envoiFormulaire() {
   order.addEventListener("click", (event) => {
     event.preventDefault();
     if (
+      // 
       !isFirstNameValid() ||
       !isLastNameValid() ||
       !isAddressValid() ||
