@@ -15,7 +15,6 @@ imgCanape.appendChild(img);
 
 infosCanape();
 
-// Une fonction asynchrone retourne toujours une promesse
 // Fonction qui appelle l'API pour aller prendre les information d'un article et les faire s'afficher dans la page "product.html"
 function infosCanape() {
   // ensuite execute cette promesse
