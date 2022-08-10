@@ -87,7 +87,7 @@ fetch("http://localhost:3000/api/products")
       // Fonction qui permet en faisant la correspondance avec l'API et l'item dans le cart, de supprimer l'article de son choix.
       removeItems.addEventListener("click", function consoleRemove() {
         let cart = JSON.parse(localStorage.getItem("cart"));
-        // Va chercher dans le tableau cart l'id et la couleur correspondant à l'API. Vérifie que lorsque l'on clique, l'article correspond bien avec celui dans le cart.
+        // Va chercher dans le tableau cart l'id et la couleur correspondant à la valeur du paramètre. Vérifie que lorsque l'on clique, l'article correspond bien avec celui dans le cart.
         let index = cart.findIndex(
           (produit) =>
             produit.idItem == unCanape.idItem &&
