@@ -259,7 +259,6 @@ function envoiFormulaire() {
         .then((data) => {
           localStorage.clear();
           console.log(data);
-          localStorage.setItem("orderId", data.orderId);
           document.location.href = "confirmation.html?id=" + data.orderId;
         })
         .catch((err) => {
