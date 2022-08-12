@@ -213,7 +213,7 @@ function envoiFormulaire() {
   order.addEventListener("click", (event) => {
     event.preventDefault();
     if (
-      // 
+      //
       !isFirstNameValid() ||
       !isLastNameValid() ||
       !isAddressValid() ||
